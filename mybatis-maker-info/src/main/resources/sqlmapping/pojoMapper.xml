@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.table.dao.*">
+
+	<!-- 学校表插入 -->
+	<insert id="insertSchool" parameterType="com.table.pojo.School">
+		insert into
+		school(name,jbw,eyy)values(#{name},#{jbw},#{eyy})
+	</insert>
+
+	<!-- 学校表查询id和name(分页查询) -->
+	<select id="selectSchool" resultType="com.table.pojo.School" parameterType="int">
+		select id,name from school order by id desc limit #{sr}, 10
+	</select>
+
+	<!-- 学校表查询school对象 -->
+	<select id="selectAllSchool" resultType="com.table.pojo.School">
+		select * from school order by id desc
+	</select>
+
+	<!-- 动态sql 学校表条件查询 -->
+	<select id="selectForSchool" parameterType="com.table.pojo.School"
+		resultType="com.table.pojo.School">
+		select id,name,jbw,eyy from school
+		<!-- where是为了去除第一个and -->
+		<where>
+			<!-- if是用来判断 -->
+			<if test="name!=null and name!=''">
+				and name like '%${name}%'
+			</if>
+			<if test="jbw!=null and jbw!=''">
+				and jbw=#{jbw}
+			</if>
+			<if test="eyy!=null and eyy!=''">
+				and eyy=#{eyy}
+			</if>
+		</where>
+	</select>
+
+	<!-- 学校表根据id查询school -->
+	<select id="selectSchoolById" parameterType="long"
+		resultType="com.table.pojo.School">
+		select * from school where id=#{id}
+	</select>
+
+	<!-- 学校表修改数据 -->
+	<update id="updateSchool" parameterType="map">
+		update school set
+		name=#{name},jbw=#{jbw},eyy=#{eyy} where id=#{id}
+	</update>
+
+	<!-- 学校表删除 -->
+	<delete id="deleteSchool" parameterType="long">
+		delete from school where
+		id=#{id}
+	</delete>
+
+	<!-- 年级表插入 -->
+	<insert id="insertGrade" parameterType="com.table.pojo.Grade">
+		insert into
+		grade(name)values(#{name})
+	</insert>
+
+	<!-- 年级表查询id和name(分页查询) -->
+	<select id="selectGrade" resultType="com.table.pojo.Grade" parameterType="int">
+		select id,name from grade order by id desc limit #{sr}, 10
+	</select>
+
+	<!-- 年级表查询grade对象 -->
+	<select id="selectAllGrade" resultType="com.table.pojo.Grade">
+		select * from grade order by id desc
+	</select>
+
+	<!-- 年级表条件查询 动态sql -->
+	<select id="selectForGrade" parameterType="com.table.pojo.Grade" resultType="com.table.pojo.Grade">
+		select * from grade
+		<where>
+		   <if test="name!=null and name!=''">
+			  and name like '%${name}%'
+		   </if>
+		</where>		
+	</select>
+
+	<!-- 年级表根据id查询 -->
+	<select id="selectGradeById" parameterType="long"
+		resultType="com.table.pojo.Grade">
+		select * from grade where id=#{id}
+	</select>
+
+	<!-- 年级表更新 -->
+	<update id="updateGrade" parameterType="map">
+		update grade set
+		name=#{name} where id=#{id}
+	</update>
+
+	<!-- 年级表删除 -->
+	<delete id="deleteGrade" parameterType="long">
+		delete from grade where
+		id=#{id}
+	</delete>
+
+	<!-- 班级插入 -->
+	<insert id="insertClass" parameterType="com.table.pojo.ClassInfo">
+		insert into
+		class(name,sch_id,gra_id)values(#{name},#{sch_id},#{gra_id})
+	</insert>
+
+	<!-- 班级查询id和name -->
+	<select id="selectClass" resultType="com.table.pojo.ClassInfo">
+		select id,name from class order by id desc
+	</select>
+
+	<!-- 班级查询所有class对象 -->
+	<select id="selectAllClass" resultType="com.table.pojo.ClassInfo">
+		select * from class order
+		by id desc
+	</select>
+
+	<!-- 班级表条件查询 -->
+	<select id="selectForClass" parameterType="com.table.pojo.ClassInfo"
+		resultType="com.table.pojo.ClassInfo">
+		select * from class
+		<where>
+		   <if test="name!=null and name!=''">
+			  and class.name like '%${name}%'
+		   </if>
+		</where>
+	</select>
+
+	<!-- 班级表根据id查询 -->
+	<select id="selectClassById" parameterType="long"
+		resultType="com.table.pojo.ClassInfo">
+		select * from class where id=#{id}
+	</select>
+
+	<!-- 班级表修改 -->
+	<update id="updateClass" parameterType="map">
+		update class set
+		name=#{name},sch_id=#{sch_id},gra_id=#{gra_id} where
+		id=#{id}
+	</update>
+
+	<!-- 班级表删除 -->
+	<delete id="deleteClass" parameterType="long">
+		delete from class where
+		id=#{id}
+	</delete>
+
+	<!-- 学生表插入 -->
+	<insert id="insertStudent" parameterType="com.table.pojo.Student">
+		insert into
+		student(name,birthday,sex,sch_id,gra_id,cla_id)values(#{name},#{birthday},#{sex},#{sch_id},#{gra_id},#{cla_id})
+	</insert>
+
+	<!-- 学生表查询id -->
+	<select id="selectStudent" parameterType="map" resultType="long">
+		select id from student where cla_id=#{cla_id}
+	</select>
+
+	<!-- 学生表查询所有学生信息 -->
+	<select id="selectAllStudent" resultType="com.table.pojo.Student">
+		select * from student
+		order by id desc
+	</select>
+
+	<!-- 学生表表条件查询 -->
+	<select id="selectForStudent" parameterType="com.table.pojo.Student"
+		resultType="com.table.pojo.Student">
+		select * from student 
+	  <where>
+	     <if test="name!=null and name!=''">
+	         and student.name like '%${name}%'
+	     </if>
+	     <if test="sex!=null and sex!=''">
+	         and sex=#{sex}
+	     </if>
+	  </where>
+	</select>
+
+	<!-- 学生表根据id查询 -->
+	<select id="selectStudentById" parameterType="long"
+		resultType="com.table.pojo.Student">
+		select * from student
+		where id=#{id}
+	</select>
+
+	<!-- 学生表修改 -->
+	<update id="updateStudent" parameterType="map">
+		update student set
+		name=#{name},birthday=#{birthday},sex=#{sex},sch_id=#{sch_id},gra_id=#{gra_id},cla_id=#{cla_id}
+		where
+		id=#{id}
+	</update>
+
+	<!-- 学生表删除 -->
+	<delete id="deleteStudent" parameterType="long">
+		delete from student
+		where
+		id=#{id}
+	</delete>
+
+	<!-- 教师表插入 -->
+	<insert id="insertTeacher" parameterType="com.table.pojo.Teacher">
+		insert into
+		teacher(name,cid)values(#{name},#{cid})
+	</insert>
+
+	<!-- 教师表查询 -->
+	<select id="selectAllTeacher" resultType="com.table.pojo.Teacher">
+		select * from teacher
+		order by id desc
+	</select>
+
+	<!-- 教师表表条件查询 -->
+	<select id="selectForTeacher" parameterType="map"
+		resultType="com.table.pojo.Teacher">
+		select * from teacher
+		<where>
+		   <if test="name!=null and name!=''">
+		       and teacher.name like '%${name}%'
+		   </if>
+		</where>	
+	</select>
+
+	<!-- 教师表根据id查询 -->
+	<select id="selectTeacherById" parameterType="long"
+		resultType="com.table.pojo.Teacher">
+		select * from teacher
+		where id=#{id}
+	</select>
+
+	<!-- 教师表修改 -->
+	<update id="updateTeacher" parameterType="map">
+		update teacher set
+		name=#{name},cid=#{cid} where
+		id=#{id}
+	</update>
+
+	<!-- 教师表删除 -->
+	<delete id="deleteTeacher" parameterType="long">
+		delete from teacher
+		where
+		id=#{id}
+	</delete>
+
+
+	<!-- 课程表插入 -->
+	<insert id="insertCourse" parameterType="com.table.pojo.Course">
+		insert into
+		course(name)values(#{name})
+	</insert>
+
+	<!-- 课程表查询id -->
+	<select id="selectCourse" resultType="long">
+		select id from course
+	</select>
+
+	<!-- 课程表查询course对象 -->
+	<select id="selectAllCourse" resultType="com.table.pojo.Course">
+		select * from course
+		order by id desc
+	</select>
+
+	<!-- 课程表表条件查询 -->
+	<select id="selectForCourse" parameterType="com.table.pojo.Course"
+		resultType="com.table.pojo.Course">
+		select * from course 
+	  <where>
+	     <if test="name!=null and name!=''">
+	         and course.name like '%${name}%'
+	     </if>
+	  </where>
+	</select>
+
+	<!-- 课程表根据id查询 -->
+	<select id="selectCourseById" parameterType="long"
+		resultType="com.table.pojo.Course">
+		select * from course
+		where id=#{id}
+	</select>
+
+	<!-- 课程表修改 -->
+	<update id="updateCourse" parameterType="map">
+		update course set
+		name=#{name} where
+		id=#{id}
+	</update>
+
+	<!-- 课程表删除 -->
+	<delete id="deleteCourse" parameterType="long">
+		delete from course where
+		id=#{id}
+	</delete>
+
+
+	<!-- 选修课插入 -->
+	<insert id="insertElective" parameterType="com.table.pojo.Elective">
+		insert into
+		elective(sid,cid,tid,score)values(#{sid},#{cid},#{tid},#{score})
+	</insert>
+
+	<!-- 选修课查询对象 -->
+	<select id="selectAllElective" resultType="com.table.pojo.Elective">
+		select * from elective order by id desc
+	</select>
+
+	<!-- 选修表条件查询 -->
+	<select id="selectForElective" parameterType="map"
+		resultType="com.table.pojo.Elective">
+		select * from elective 
+		<where>
+		  <if test="score!=null and score!=''">
+		     and score=#{score}
+		  </if>
+		</where>
+	</select>
+
+	<!-- 选修表根据id查询 -->
+	<select id="selectElectiveById" parameterType="long"
+		resultType="com.table.pojo.Elective">
+		select * from elective where id=#{id}
+	</select>
+
+	<!-- 选修表修改 -->
+	<update id="updateElective" parameterType="map">
+		update elective set
+		sid=#{sid},cid=#{cid},tid=#{tid},score=#{score} where
+		id=#{id}
+	</update>
+
+	<!-- 选修表删除 -->
+	<delete id="deleteElective" parameterType="long">
+		delete from elective
+		where
+		id=#{id}
+	</delete>
+	
+	<!-- 学生选修课查询  -->
+	<select id="selectElectiveByStudentId" resultType="com.table.pojo.ElectiveCourse" parameterType="long">
+	    select elective.*,course.name from elective left join course on 
+	    course.id=elective.cid where elective.sid=#{sid}
+	</select>
+
+</mapper>
