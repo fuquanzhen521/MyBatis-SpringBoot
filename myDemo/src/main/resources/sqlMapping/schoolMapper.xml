@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quanzhen.myDemo.dao.SchoolDao">
+	<!-- 映射结果集 -->
+	<resultMap type="School" id="school-result">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="jbw" property="jbw" />
+		<result column="eyy" property="eyy" />
+	</resultMap>
+
+	<!-- 查询所有学校数据 -->
+	<select id="findAll" resultMap="school-result">
+		select * from school order by id 
+		desc
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="save" parameterType="com.quanzhen.myDemo.pojo.School">
+		insert into
+		school(name,jbw,eyy)value(#{name},#{jbw},#{eyy})
+	</insert>
+
+	<!-- 修改数据 -->
+	<update id="update" parameterType="com.quanzhen.myDemo.pojo.School">
+		update school set name=#{name},jbw=#{jbw},eyy=#{eyy} where id=#{id}
+	</update>
+
+	<!-- 删除数据 -->
+	<delete id="delete" parameterType="long">
+		delete from school where id=#{id}
+	</delete>
+
+</mapper>

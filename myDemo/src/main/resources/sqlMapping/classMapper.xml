@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quanzhen.myDemo.dao.ClassDao">
+	<!-- 映射结果集 -->
+	<resultMap type="ClassInfo" id="class-result">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="schooId" property="sch_id" />
+		<result column="gradeId" property="gra_id" />
+	</resultMap>
+
+	<!-- 查询所有班级数据 -->
+	<select id="findAll" resultMap="class-result">
+		select * from class order by id
+		desc
+	</select>
+
+	<!-- 插入数据 -->
+	<insert id="save"
+		parameterType="com.quanzhen.myDemo.pojo.ClassInfo">
+		insert into
+		class(name,sch_id,gra_id)value(#{name},#{sch_id},#{gra_id})
+	</insert>
+
+	<!-- 修改数据 -->
+	<update id="update"
+		parameterType="com.quanzhen.myDemo.pojo.ClassInfo">
+		update class set
+		name=#{name},sch_id=#{sch_id}.gra_id=#{gra_id}
+		where id=#{id}
+	</update>
+
+	<!-- 删除数据 -->
+	<delete id="delete" parameterType="long">
+		delete from class where
+		id=#{id}
+	</delete>
+
+</mapper>
